@@ -1,21 +1,26 @@
 version: 1
 frontend:
-  appRoot: frontend
   phases:
+    # The PREBUILD phase is for installing dependencies
     preBuild:
       commands:
-        # Installs dependencies for the app in the 'frontend' directory
+        # 1. Navigate into your app's directory
+        - cd frontend
+        # 2. Install dependencies
         - npm install
+    # The BUILD phase is for building your app
     build:
       commands:
-        # Builds the app in the 'frontend' directory
+        # This command will now correctly run inside the 'frontend' directory
         - npm run build
+  # The ARTIFACTS section tells Amplify where your built app is
   artifacts:
-    # Specifies the output directory of the build, relative to the appRoot
-    baseDirectory: .next
+    # This path must be relative to the project root
+    baseDirectory: frontend/.next
     files:
       - '**/*'
+  # The CACHE section speeds up future builds
   cache:
     paths:
-      # Caches the node_modules inside your app's directory
-      - node_modules/**/*
+      # This path must also be relative to the project root
+      - frontend/node_modules/**/*
