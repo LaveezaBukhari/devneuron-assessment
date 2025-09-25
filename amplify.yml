@@ -1,26 +1,32 @@
 version: 1
 frontend:
   phases:
-    # The PREBUILD phase is for installing dependencies
+    # Installs your project's dependencies
     preBuild:
       commands:
-        # 1. Navigate into your app's directory
+        # Navigates into your application's folder
         - cd frontend
-        # 2. Install dependencies
+        # Installs the dependencies listed in your package.json
         - npm install
-    # The BUILD phase is for building your app
+    # Builds your project for production
     build:
       commands:
-        # This command will now correctly run inside the 'frontend' directory
+        # This command runs your build script. If your build script
+        # has a different name, change 'build' to the correct name.
         - npm run build
-  # The ARTIFACTS section tells Amplify where your built app is
+  # Tells Amplify where to find your built website files
   artifacts:
-    # This path must be relative to the project root
-    baseDirectory: frontend/.next
+    # IMPORTANT: You may need to change 'build' to the name of
+    # your project's actual build output folder (e.g., 'dist', 'public').
+    baseDirectory: frontend/build
     files:
       - '**/*'
-  # The CACHE section speeds up future builds
+  # Caches dependencies to speed up future builds
   cache:
     paths:
-      # This path must also be relative to the project root
       - frontend/node_modules/**/*
+  # --- This is the crucial fix for the 404 error ---
+  customRules:
+    - source: /<*>
+      target: /index.html
+      status: '200'
