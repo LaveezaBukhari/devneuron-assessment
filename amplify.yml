@@ -1,16 +1,21 @@
 version: 1
 frontend:
+  appRoot: frontend
   phases:
     preBuild:
       commands:
-        - cd frontend && npm install
+        # Installs dependencies for the app in the 'frontend' directory
+        - npm install
     build:
       commands:
-        - cd frontend && npm run build
+        # Builds the app in the 'frontend' directory
+        - npm run build
   artifacts:
-    baseDirectory: frontend/.next
+    # Specifies the output directory of the build, relative to the appRoot
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
     paths:
-      - frontend/node_modules/**/*
+      # Caches the node_modules inside your app's directory
+      - node_modules/**/*
