@@ -1,31 +1,20 @@
 version: 1
 frontend:
   phases:
-    # Installs your project's dependencies
     preBuild:
       commands:
-        # Navigates into your application's folder
         - cd frontend
-        # Installs the dependencies listed in your package.json
         - npm install
-    # Builds your project for production
     build:
       commands:
-        # This command runs your build script. If your build script
-        # has a different name, change 'build' to the correct name.
-        - npm run build
-  # Tells Amplify where to find your built website files
+        - npm run build && npm run export
   artifacts:
-    # IMPORTANT: You may need to change 'build' to the name of
-    # your project's actual build output folder (e.g., 'dist', 'public').
-    baseDirectory: frontend/build
+    baseDirectory: frontend/out
     files:
       - '**/*'
-  # Caches dependencies to speed up future builds
   cache:
     paths:
       - frontend/node_modules/**/*
-  # --- This is the crucial fix for the 404 error ---
   customRules:
     - source: /<*>
       target: /index.html
